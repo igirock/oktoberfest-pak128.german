@@ -8,23 +8,6 @@ scenario.author            	= "iGi"
 scenario.api	       		<- "120.3"		// scenario relies on this version of the api
 scenario.version           	= "1.0" 
 
-
-/*
-third scenario:
-- Player must found a city (very free form -> good)
-- if city is founded, it is marked as the "player city"
-- baustoffe consumer is placed by script to increase city growth (for every X good consumed, increase city pop by script)
-- more spawns of industries?
-- next goal: have the biggest city in the region (bigger than any other city and at least 15000 pops, so it cannot be cheated with all low pop cities)
-- if reached, oktoberfest spawns
-- bierversorgung sicherstellen - reached when: 6 month of uninterrupted beer supply.
-- Der Grundstein ist gelegt... jetzt mehr Gäste -> bringe Passagiere um die "Produktion" zu erhöhen -> Ziel: 800% erhöhung durch Passagiere und wieder 6 Monate unterbrechungslose Biervesorgung. + ev. Stromversorgung.
-- Erweitere dein Angebot auf alle Waren. -> Endziel: Alle Waren müssen verfügbar sein, jeden Oktober für 3 Jahre in Folge. (ev. lose condition: falls Bier nicht verfügbar im Oktober -> lose.)
-
-
-- end goal: oktoberfest needs to be fully supplied in Oktober of 2 consecutive years.
-*/
-
 /*
 city industry: Für Jahr 1920
 Apotheke - 1886 - 1965	- everything else  ; Apotheke1800_NIC
@@ -1076,14 +1059,6 @@ function start()
 	scenario.forbidden_tools.remove(idx)
 	idx = scenario.forbidden_tools.find(tool_link_factory)
 	scenario.forbidden_tools.remove(idx)
-	
-	//local hqCoord = findHQ(0);
-	//local me = player_x(0);
-	//if (hqCoord.x == -1 && hqCoord.y == -1)
-	//{
-	//	gui.add_message(me, "Build your Headquarter to claim a city and start the scenario.");
-	//	return;
-	//}
 }
 
 /**
@@ -1092,62 +1067,16 @@ function start()
 function resume_game()
 {
 	start()
-	//gCityList <- CityChecker()
-	//gCityList.init()
-	//gIndustryPlacer <- CityIndustryPlacer()
-	
-	//local idx = scenario.forbidden_tools.find(tool_add_city)
-	//scenario.forbidden_tools.remove(idx)
 }
 
 function is_scenario_completed(player)
 {
-
-	//local ticks = world.get_time();
-	//debugmsg("ticks in month: " + ticks.ticks_per_month + "nextmonth: " + ticks.next_month_ticks);
-	//local test = [];
-	//test.push(FreeField(1,2));
-	//test.push(FreeField(5,1));
-	//test.push(FreeField(4,5));
-	//test.push(FreeField(3,8));
-	//test.push(FreeField(1,3));
-	//test.push(FreeField(7,4));
-	//test.push(FreeField(3,2));
-	//test.push(FreeField(9,9));
-	//test.push(FreeField(10,7));
-	//
-	//debugmsg("unsorted")
-	//foreach (f in test)
-	//{
-	//	debugmsg("x: " + f.x + "y:" + f.y);
-	//}
-	//
-	//debugmsg("startQS")
-	//quickSortIterative(test, function (left, right)
-	//{
-	//	local res = left.x <=> right.x;
-	//	if (res == 0)
-	//		return left.y <=> right.y;
-	//	return res;
-	//});
-	//
-	//debugmsg("endQS")
-	//
-	//debugmsg("sorted")
-	//foreach (f in test)
-	//{
-	//	debugmsg("x: " + f.x + "y:" + f.y);
-	//}
-
-
 	if (gPhases == null || gTickRatio == null)
 		return 0;
 
 	gTickRatio.tick();
 
 	return gPhases.completePercent();
-	
-	//gui.add_message(me, "complete?");
 }
 
 /**
@@ -1170,8 +1099,6 @@ function new_month()
 	if (gTickRatio == null)
 		return;
 	gTickRatio.month();
-	//local me = player_x(0);
-	//gui.add_message(me, msg);
 }
 
 function new_year()
