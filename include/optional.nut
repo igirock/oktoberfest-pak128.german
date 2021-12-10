@@ -183,7 +183,7 @@ class BuildIndustry1
 		
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Cement", "Precast concrete", "Steel"];
+		local wares = ["Zement", "Betonfertigteile", "Stahl"];
 
 		return addWaresList(text.tostring(), wares);
 	}
@@ -360,11 +360,11 @@ class BuildGasthof1800
 		
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Beer", "Wine", "Pastries"];
+		local wares = ["Bier", "Wein", "Backwaren"];
 		local text = addWaresList(text.tostring(), wares) + "<br>";
 		
 		local text2 = ttext("You can increase the city's <i>maximum growth</i> by supplying at least one of these wares to the factory:<br>");
-		local wares2 = ["Fish", "Meat"];
+		local wares2 = ["Fisch", "Fleisch"];
 		text2 = addWaresList(text2.tostring(), wares2);
 		
 		return text + text2;
@@ -523,7 +523,7 @@ class BuildGastwirtschaft
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>maximum growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Beer", "Convenience food", "Canned food", "Marzipan"];
+		local wares = ["Bier", "Fertiggerichte", "Dosenessen", "Marzipan"];
 		return addWaresList(text.tostring(), wares);
 	}
 	
@@ -705,7 +705,7 @@ class BuildHaushaltsartikel
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth factor</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares =["Machines", "Furniture"];
+		local wares =["Maschinen", "Moebel"];
 		return addWaresList(text.tostring(), wares);
 	}
 	
@@ -869,7 +869,7 @@ class BuildApotheke
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth factor</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Medicines"];
+		local wares = ["Medikamente"];
 		return addWaresList(text.tostring(), wares);
 	}
 	
@@ -1021,7 +1021,7 @@ class BuildAutohaus
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>maximum growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Cars"]
+		local wares = ["Autos"]
 		return addWaresList(text.tostring(), wares);
 	}
 	
@@ -1207,11 +1207,11 @@ class BuildMarkt
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Beer", "Pastries", "Eggs", "Fruit"];
+		local wares = ["Bier", "Backwaren", "Eier", "Obst"];
 		local text = addWaresList(text.tostring(), wares) + "<br>";
 		
 		local text2 = ttext("You can increase the city's <i>maximum growth</i> by supplying at least one of these wares to the factory:<br>");
-		local wares2 = ["Tropical fruits", "Milk", "Textiles", "Poultry"];
+		local wares2 = ["Suedfruechte", "Milch", "Textilien", "Gefluegel"];
 		text2 = addWaresList(text2.tostring(), wares2);
 		
 		return text + text2;
@@ -1386,7 +1386,7 @@ class BuildWarenhaus
 	
 		local text = ttext("{fac}:<br>You can increase the city's <i>growth</i> by supplying at least one of these wares to the factory:<br>");
 		text.fac = getLink(_industryName, _pers.industryCoord);
-		local wares = ["Beer", "Pastries", "Books", "Tropical fruits", "Convenience food", "Textiles", "Cameras", "Canned food", "Dairy products", "Furniture", "Wine"];
+		local wares = ["Bier", "Backwaren", "Buecher", "Suedfruechte", "Fertiggerichte", "Textilien", "Kameras", "Dosenessen", "Molkereiprodukte", "Moebel", "Wein"];
 		return addWaresList(text.tostring(), wares);
 	}
 	
@@ -1769,7 +1769,7 @@ class ManageCityGrowth
 	function resulttext()
 	{
 		local cityGrowth = _pers.lastCityGrowth;
-		local t = ttext("Due to supplied wares to factories in the city, the city has increased growth.<br>Summary of last month:<br>Increased growth: {growth} citizens<br>Base maximum growth: {baseMaxGrowth}<br>Increased maximum growth: {maxGrowth}<br>Growth factor: {growthFactor} (Increases growth by a factor)<br>Maximum growth factor: {maxGrowthFactor} (Increases maximum Growth by a factor)<br>Calculated maximum growth: {calcMaxGrowth}<br><br>Total increased growth last month: {calcGrowth}");
+		local t = ttext("Due to supplied wares to factories in the city");
 		t.growth = getGrowth(cityGrowth);
 		t.baseMaxGrowth = cityGrowth.baseMaxGrowth;
 		t.maxGrowth = getMaxGrowth(cityGrowth);

@@ -63,7 +63,7 @@ include("include/paksetdata")
 
 gTickRatio <- null
 gPhases <- null
-gDebug <- false
+gDebug <- true
 gDebugMessages <- false
 
 function get_rule_text(pl)
@@ -408,9 +408,9 @@ class Phase2
 			// save the current date - this marks the "official" start of the scenario.
 			local starttime = world.get_time();
 			_helper.saveVar("startTime_Year", starttime.year);
-			_helper.saveVar("startTime_Month", starttime.month + 1); // month 0..11
+			_helper.saveVar("startTime_Month", starttime.month); // month 0..11
 			
-			debugmsg(format("starttime year: %d month: %d", starttime.year, starttime.month + 1));
+			debugmsg(format("starttime year: %d month: %d", starttime.year, starttime.month));
 		}
 		
 		_checkPopTimerId = gTickRatio.addMonthCallback(checkPops.bindenv(this), 120); // make sure its after the growth increase goal
@@ -682,7 +682,7 @@ class Phase3
 			t = ttext("Supply the {okt} with the most essential ware for {consecGoal} consecutive months, without it going out of stock.<br>(The most essential ware is {bier}.)");
 			t.okt = getLink(_oktoberfestName, _pers.oktoberfestCoord);
 			t.consecGoal = _consecutiveGoal;
-			t.bier = translate("Beer");
+			t.bier = translate("Bier");
 		}
 		else
 		{
@@ -801,9 +801,9 @@ class Phase4
 		local t = ttext("Supply the {okt} with these wares for {months} consecutive months, without it going out of stock:<br>{bier}, {backwaren}, {mandeln}<br>Additionally the passenger boost has to be kept above {paxBoost}% during that time.");
 		t.okt = getLink(_oktoberfestName, _oktCoord);
 		t.months = _consecutiveGoal;
-		t.bier = translate("Beer");
-		t.backwaren = translate("Pastries");
-		t.mandeln = translate("Almonds");
+		t.bier = translate("Bier");
+		t.backwaren = translate("Backwaren");
+		t.mandeln = translate("Mandeln");
 		t.paxBoost = _paxBoostGoal;
 		return t.tostring();
 	}
@@ -971,7 +971,7 @@ class PhaseComplete
 	{
 		_helper = helper;
 		local endtime = world.get_time();
-		_helper.saveVar("endTime_Month", endtime.month + 1);
+		_helper.saveVar("endTime_Month", endtime.month);
 		_helper.saveVar("endTime_Year", endtime.year);
 	}
 	
@@ -985,31 +985,16 @@ class PhaseComplete
 		
 		local t = ttext("Congratulations.<br>You have finished this scenario.<br>You started in {month} {year} and finished in {endmonth} {endyear}.");
 		local month = _helper.loadVar("startTime_Month");
+		if (month == 12)
+			month = 11; //first version had 1..12 months instead of 0..11
 		t.year = _helper.loadVar("startTime_Year");
-		t.month = getMonthName(month);
+		t.month = get_month_name(month);
 		t.endyear = _helper.loadVar("endTime_Year");
-		t.endmonth = getMonthName(_helper.loadVar("endTime_Month"));
+		local endmonth = _helper.loadVar("endTime_Month");
+		if (endmonth == 12)
+			endmonth = 11; //first version had 1..12 months instead of 0..11
+		t.endmonth = get_month_name(endmonth);
 		return t.tostring();
-	}
-	
-	function getMonthName(month)
-	{
-		switch (month)
-		{
-			case 1: return ttext("January");
-			case 2: return ttext("February");
-			case 3: return ttext("March");
-			case 4: return ttext("April");
-			case 5: return ttext("May");
-			case 6: return ttext("June");
-			case 7: return ttext("July");
-			case 8: return ttext("August");
-			case 9: return ttext("September");
-			case 10: return ttext("October");
-			case 11: return ttext("November");
-			case 12: return ttext("December");
-			default: return ttext("Unknown month");
-		}
 	}
 	
 	function resulttext()
@@ -1055,9 +1040,15 @@ function start()
 	
 	local idx = scenario.forbidden_tools.find(tool_add_city)
 	scenario.forbidden_tools.remove(idx)
-	idx = scenario.forbidden_tools.find(tool_change_city_size)
+	idx = scenario.forbidden_tools.find(tool_land_chain)
 	scenario.forbidden_tools.remove(idx)
 	idx = scenario.forbidden_tools.find(tool_link_factory)
+	scenario.forbidden_tools.remove(idx)
+	idx = scenario.forbidden_tools.find(tool_city_chain)
+	scenario.forbidden_tools.remove(idx)
+	idx = scenario.forbidden_tools.find(tool_build_factory)
+	scenario.forbidden_tools.remove(idx)
+	idx = scenario.forbidden_tools.find(tool_increase_industry)
 	scenario.forbidden_tools.remove(idx)
 }
 
@@ -1103,8 +1094,7 @@ function new_month()
 
 function new_year()
 {
-	//local me = player_x(0);
-	//gui.add_message(me, "new year");
+
 }
 
 
