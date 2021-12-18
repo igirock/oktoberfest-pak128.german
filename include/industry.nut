@@ -134,6 +134,7 @@ class IndustryBuilder
 		}
 		
 		local size = getIndustrySize(nameOfIndustry);
+		debugmsg("industrysize: x: " + size.x + " y: " + size.y);
 		local actualPos = null;
 		do
 		{
@@ -711,5 +712,11 @@ class IndustryBuilder
 		}
 		
 		return true;
+	}
+	
+	function getIndustrySize(nameOfIndustry)
+	{
+		local facDesc = factory_desc_x(nameOfIndustry);
+		return facDesc.get_building_desc().get_size(0); // always 0 rotation
 	}
 }

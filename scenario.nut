@@ -63,7 +63,7 @@ include("include/paksetdata")
 
 gTickRatio <- null
 gPhases <- null
-gDebug <- true
+gDebug <- false
 gDebugMessages <- false
 
 function get_rule_text(pl)
