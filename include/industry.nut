@@ -170,19 +170,40 @@ class IndustryBuilder
 			
 			local factoryListAfter = factory_list_x();
 
-			// the build command "ignores" the coord we give it;
-			// we have to iterate the factories and see where it was actually built.
+			local compatMode = get_raw_name_compatibility(factoryListAfter);
 			
-			foreach(fac in factoryListAfter)
+			if (compatMode)
 			{
-				if (containsCoord(facListBefore, fac))
-					continue;
-					
-				local rawname = fac.get_raw_name(); // needs nightly
-				if (rawname == nameOfIndustry)	// we assume only one industry of same type got built
+				// old simutrans version without "get_raw_name" function
+				local nameOfIndustry_translated = translate(nameOfIndustry);
+				foreach(fac in factoryListAfter)
 				{
-					actualPos = coord(fac.x, fac.y);
-					break;
+					if (containsCoord(facListBefore, fac))
+						continue; // factory existed before we built ours
+						
+					local translatedname = fac.get_name(); // 
+					if (translatedname == nameOfIndustry_translated)	// we assume only one industry of same type got built
+					{
+						actualPos = coord(fac.x, fac.y);
+						break;
+					}
+				}
+			}
+			else //normal case - we have "get_raw_name" function
+			{
+				// the build command "ignores" the coord we give it;
+				// we have to iterate the factories and see where it was actually built.
+				foreach(fac in factoryListAfter)
+				{
+					if (containsCoord(facListBefore, fac))
+						continue; // factory existed before we built ours
+						
+					local rawname = fac.get_raw_name(); // needs nightly
+					if (rawname == nameOfIndustry)	// we assume only one industry of same type got built
+					{
+						actualPos = coord(fac.x, fac.y);
+						break;
+					}
 				}
 			}
 			
@@ -716,7 +737,95 @@ class IndustryBuilder
 	
 	function getIndustrySize(nameOfIndustry)
 	{
-		local facDesc = factory_desc_x(nameOfIndustry);
-		return facDesc.get_building_desc().get_size(0); // always 0 rotation
+		try
+		{
+			local facDesc = factory_desc_x(nameOfIndustry);
+			return facDesc.get_building_desc().get_size(0); // always 0 rotation
+		}
+		catch(ex)
+		{
+			// old simutrans versions where factory_desc_x does not exist.
+			return getIndustrySize_hardcoded(nameOfIndustry);
+		}
+	}
+	
+	function getIndustrySize_hardcoded(nameOfIndustry)
+	{
+		local s = {};
+		switch (nameOfIndustry)
+		{
+			case "Baustoffhof_1800": 
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+
+			case "Oktoberfest":
+				s.x <- 5;
+				s.y <- 5;
+				return s;
+
+			case "Gasthof_1800":
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+
+			case "Gastwirtschaft_mit_Laden":
+				s.x <- 2;
+				s.y <- 1;
+				return s;
+
+			case "Geraete_und_Haushaltsartikel":
+				s.x <- 1;
+				s.y <- 2;
+				return s;
+
+			case "Apotheke1800_NIC":
+				s.x <- 1;
+				s.y <- 1;
+				return s;
+
+			case "VWAutohaus_NIC":
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+
+			case "AVL_Marktplatz_NIC":
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+
+			case "Kaufhaus_NIC":
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+
+			case "Verwaltung_Muenchen_1965":
+				s.x <- 2;
+				s.y <- 2;
+				return s;
+		}
+	}
+	
+	// return true, when old simutrans version without get_raw_name
+	// return false otherwise
+	function get_raw_name_compatibility(facList)
+	{
+		if (facList.get_count() == 0)
+		{
+			// special case: no industries on map to check with
+			// just assume compat mode
+			return true;
+		}
+		
+		local fac = facList[0];
+		try
+		{
+			local rawname = fac.get_raw_name();
+		}
+		catch(ex)
+		{
+			return true;
+		}
+		return false;
 	}
 }

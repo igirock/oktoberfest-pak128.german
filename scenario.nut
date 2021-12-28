@@ -1025,7 +1025,7 @@ function getLink(cityname, cityCoord)
 
 function debugmsg(msg)
 {
-	if (gDebug && gDebugMessages)
+	if (gDebugMessages)
 	{
 		local me = player_x(0);
 		gui.add_message(me, msg);
