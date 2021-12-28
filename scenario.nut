@@ -7,6 +7,7 @@ scenario.short_description 	= "Oktoberfest"    // scenario name
 scenario.author            	= "iGi"
 scenario.api	       		<- "120.3"		// scenario relies on this version of the api
 scenario.version           	= "1.0" 
+scenario.translation		= ""
 
 /*
 city industry: Für Jahr 1920
@@ -1050,6 +1051,15 @@ function start()
 	scenario.forbidden_tools.remove(idx)
 	idx = scenario.forbidden_tools.find(tool_increase_industry)
 	scenario.forbidden_tools.remove(idx)
+	idx = scenario.forbidden_tools.find(dialog_enlarge_map)
+	scenario.forbidden_tools.remove(idx)
+	idx = scenario.forbidden_tools.find(dialog_edit_factory)
+	scenario.forbidden_tools.remove(idx)
+	
+	rules.allow_tool(player_all, tool_build_factory);
+	rules.allow_tool(player_all, tool_increase_industry);
+	
+	rules.gui_needs_update();
 }
 
 /**
