@@ -28,6 +28,23 @@ class Phases
 		{
 			_optionalGoals.push(createOptionalGoal(goalId));
 		}
+		
+		
+		local timeinfo = _helper.loadVar("showTimeInfo");
+		if (timeinfo == null)
+		{
+			local timeticks = world.get_time();
+			if(timeticks.year < 1930)
+			{
+				timeinfo = true;
+			}
+			else 
+			{
+				timeinfo = false;
+			}
+			
+			_helper.saveVar("showTimeInfo", timeinfo);
+		}
 	}
 	
 	// phase completed
@@ -143,7 +160,37 @@ class Phases
 	function infotext()
 	{
 		local text = ttext("Build your company headquarter in the vincinity of a city, to 'select' it.<br><br>The goal is to grow the 'selected' city to the biggest city in the region and to celebrate a big party.");
-		return text;
+		
+		local timeinfo = _helper.loadVar("showTimeInfo");
+		local timeline = "";
+		if (timeinfo)
+		{
+			timeline = ttext("It is recommended to start the scenario not earlier than 1930.");
+		}
+		
+		local streetcleaner = null;
+		local changeStat = null;
+		local status = _helper.loadVar("cleanerStatus");
+		if (status == null)
+		{
+			status = false;
+			_helper.saveVar("cleanerStatus", status);
+		}
+		
+		if (status)
+		{
+			streetcleaner = ttext("Street cleaner: ") + translate("Active");
+			changeStat = format("<a href='script:StreetCleaner_Deactivate()'>%s</a>", translate("Deactivate")) 
+		}
+		else
+		{
+			streetcleaner = ttext("Street cleaner: ") + translate("Inactive");
+			changeStat = format("<a href='script:StreetCleaner_Activate()'>%s</a>", translate("Activate")) 
+		}
+		
+		local streetcleanerdesc = ttext("Streetcleaner description");
+		
+		return text + "<br><br>" + timeline + "<br><br>" + streetcleaner + "<br><br>" + changeStat + "<br><br>" + streetcleanerdesc;
 	}
 	
 	function goaltext()
@@ -232,4 +279,28 @@ class Phases
 	
 		return msg;
 	}
+	
+	function cleaner_enable(enable)
+	{
+		if (enable)
+		{
+			gStreetCleaner.start();
+		}
+		else
+		{
+			gStreetCleaner.stop();
+		}	
+		_helper.saveVar("cleanerStatus", enable);
+	}
+}
+
+function StreetCleaner_Deactivate()
+{
+	gPhases.cleaner_enable(false);
+	
+}
+
+function StreetCleaner_Activate()
+{
+	gPhases.cleaner_enable(true);
 }

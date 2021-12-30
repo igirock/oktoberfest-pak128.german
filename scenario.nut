@@ -6,7 +6,7 @@ map.file		       		= "<attach>"    // specify the savegame to load
 scenario.short_description 	= "Oktoberfest"    // scenario name
 scenario.author            	= "iGi"
 scenario.api	       		<- "120.3"		// scenario relies on this version of the api
-scenario.version           	= "1.0" 
+scenario.version           	= "1.1" 
 scenario.translation		= ""
 
 /*
@@ -60,10 +60,12 @@ include("include/main")
 include("include/optional")
 include("include/industry")
 include("include/paksetdata")
+include("include/streetcleaner")
 
 
 gTickRatio <- null
 gPhases <- null
+gStreetCleaner <- null
 gDebug <- false
 gDebugMessages <- false
 
@@ -1038,6 +1040,7 @@ function start()
 	debug.set_pause_on_error(true);
 	gTickRatio <- TickRatio();
 	gPhases <- Phases();
+	gStreetCleaner <- StreetCleaner();
 	
 	local idx = scenario.forbidden_tools.find(tool_add_city)
 	scenario.forbidden_tools.remove(idx)

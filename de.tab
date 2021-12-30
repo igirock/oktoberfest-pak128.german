@@ -8,24 +8,38 @@ A city can only be selected (by building a headquarter near it), if it has less 
 Nur eine Stadt mit weniger als {pops} Einwohner kann ausgewählt werden. Du kannst die Stadt auswählen indem du deine Firmenzentrale in die Nähe baust.
 A new {factory} was built in the city. See scenario goals for more information.
 Eine neue Fabrik wurde in der Stadt gebaut: {factory}. Siehe 'Missionsziele'.
+Activate
+Aktivieren
+Active
+Aktiv
 Build your company headquarter in the vincinity of a city, to 'select' it.<br><br>The goal is to grow the 'selected' city to the biggest city in the region and to celebrate a big party.
 Bauen Sie ihre Firmenzentrale in die Nähe einer Stadt, um diese Stadt 'auszuwählen'.<br><br>Das Ziel ist es, die ausgewählte Stadt zur größten Stadt in der Region wachsen zu lassen und ein großes Fest zu veranstalten.
 Build your headquarter near a city with less than {pops} citizens.
 Baue deine Firmenzentrale in die Nähe einer Stadt mit weniger als {pops} Einwohner.
 Congratulations.<br>You have finished this scenario.<br>You started in {month} {year} and finished in {endmonth} {endyear}.
 Glückwunsch.<br>Du hast das Szenario gewonnen.<br>Du hast begonnen im {month} {year} und gewonnen im {endmonth} {endyear}.
+Deactivate
+Deaktivieren
 Due to supplied wares to factories in the city
 Die Stadt wächst schneller wenn du Fabriken belieferst.<br>Zusammenfassung vom letzten Monat:<br>Erhöhtes Wachstum: {growth} Einwohner<br>Basiswert für maximales Wachstum: {baseMaxGrowth}<br>Erhöhtes maximales Wachstum: {maxGrowth}<br>Wachstumsfaktor: {growthFactor} (Erhöht das Wachstum um diesen Faktor)<br>Faktor für maximales Wachstum: {maxGrowthFactor} (Erhöht das maximale Wachstum um diesen Faktor)<br>Berechnetes maximales Wachstum: {calcMaxGrowth}<br><br>Erhöhtes Stadtwachstum im letzten Monat: {calcGrowth}
 Fully supplied wares in October for {years} out of {maxYears} consecutive years.
 Alle Waren wurden im Oktober für {years} von {maxYears} aufeinanderfolgende Jahren geliefert.
+Inactive
+Inaktiv
 Increase the citizens of {cityname} to {destPops}.
 Lasse deine Stadt {cityname} auf {destPops} Einwohner wachsen.
+It is recommended to start the scenario not earlier than 1930.
+Es ist empfohlen, das Szenario nicht vor dem Jahr 1930 zu starten.
 No special rules.
 Keine speziellen Regeln.
 Optional Goals:
 Optionale Ziele:
 Passenger boost: {paxBoost}% of required {maxPax}%
 Passagierlevel: {paxBoost}% von den benötigten {maxPax}%
+Street cleaner: 
+Straßenaufräumung: 
+Streetcleaner description
+Was ist die "Straßenaufräumung"?Wenn eine Stadt wächst und neue Straßen gebaut werden, dann kann es passieren das "unschöne Doppelstraßen" entstehen. Die Straßenaufräumung versucht dies zu verhindern, indem manche Straßen automatisch gelöscht werden. Dies geschieht für alle Städte auf der Karte. Standardmäßig ist es deaktiviert und kann mit dem Button oben an- und ausgeschalten werden.
 Supplied wares for {current} out of {consecDest} consecutive months.
 Waren wurden für {current} von {consecDest} aufeinanderfolgende Monate geliefert.
 Supply the {okt} with ALL wares in <i>October</i> for {years} consecutive years.
