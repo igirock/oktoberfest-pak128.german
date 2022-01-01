@@ -387,6 +387,7 @@ class Phase2
 	_checkPopTimerId = null;
 	_destinationPops = null;
 	_cityName = null;
+	_checkCityTimerId = null;
 
 	// phase is finished when city is biggest city with at least 15000 pops
 
@@ -417,6 +418,7 @@ class Phase2
 		}
 		
 		_checkPopTimerId = gTickRatio.addMonthCallback(checkPops.bindenv(this), 120); // make sure its after the growth increase goal
+		_checkCityTimerId = gTickRatio.addCallback(checkCity.bindenv(this), 4000);
 		
 		debugmsg("phase2 - start");
 	}
@@ -426,6 +428,8 @@ class Phase2
 		// get biggest city - increase destination pops if biggest city is > 20000;
 		// we must be 1000 pops more than biggest city.
 		local biggest = getBiggestCity();
+		if (biggest == null)
+			return;
 		if (_destinationPops < biggest + 1000)
 			_destinationPops = biggest + 1000;
 	
@@ -434,6 +438,8 @@ class Phase2
 		{
 			gTickRatio.removeMonthCallback(_checkPopTimerId);
 			_checkPopTimerId = 0;
+			gTickRatio.removeCallback(_checkCityTimerId);
+			_checkCityTimerId = 0;
 		
 			// remove all optional goals related to city growth
 			gPhases.stopOptionalGoal(1);
@@ -512,17 +518,28 @@ class Phase2
 	
 	function getBiggestCity()
 	{
+		local somethingWrong = true;
 		local biggest = 0;
 		local list = city_list_x();
 		foreach (city in list)
 		{
 			if (city.x == _cityCoord.x && city.y ==_cityCoord.y)
+			{
+				somethingWrong = false; // we have to find our own city at some point, or something is wrong.
 				continue;
+			}
 		
 			local pops = city.get_citizens()[0];
 			if (biggest < pops)
 				biggest = pops;
 		}
+		
+		if (somethingWrong)
+		{
+			debugmsg("city not found by coords!");
+			return null;
+		}
+		
 		return biggest;
 	}
 	
@@ -547,6 +564,36 @@ class Phase2
 		t.pops = getPopsOfCity(_cityCoord);
 		t.destPops = _destinationPops;
 		return t.tostring();
+	}
+	
+	function checkCity()
+	{
+		// it can happen that the coord of city are changed when a new town center spawns.
+		// so we have to constantly check if this is the case.
+		
+		local list = city_list_x();
+		foreach (city in list)
+		{
+			if (city.x == _cityCoord.x && city.y ==_cityCoord.y)
+			{
+				// city found, update name
+				_cityName = city.get_name(); 
+				return;
+			}
+		}
+		
+		// city not found by coords - probably new towncenter was built in a different location.
+		// search by name
+		foreach (city in list)
+		{
+			if (city.get_name() == _cityName)
+			{
+				_cityCoord = _helper.coordToTable(city.get_pos());
+				local pers1 = _helper.loadVar("phase1");
+				pers1.cityCoord = _cityCoord;
+				_helper.saveVar("phase1", pers1);
+			}
+		}
 	}
 }
 
@@ -1058,6 +1105,11 @@ function start()
 	scenario.forbidden_tools.remove(idx)
 	idx = scenario.forbidden_tools.find(dialog_edit_factory)
 	scenario.forbidden_tools.remove(idx)
+	if (gDebug)
+	{
+		idx = scenario.forbidden_tools.find(tool_switch_player)
+		scenario.forbidden_tools.remove(idx)
+	}
 	
 	rules.allow_tool(player_all, tool_build_factory);
 	rules.allow_tool(player_all, tool_increase_industry);
